@@ -1,0 +1,85 @@
+# .htaccess para el directorio /api/
+
+RewriteEngine On
+
+# Permitir CORS para todas las solicitudes
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+
+# Manejar solicitudes OPTIONS (preflight)
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Reescribir URLs para auth endpoints
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rutas de autenticación
+RewriteRule ^auth/login/?$ auth.php/login [L,QSA]
+RewriteRule ^auth/logout/?$ auth.php/logout [L,QSA]
+RewriteRule ^auth/verify/?$ auth.php/verify [L,QSA]
+RewriteRule ^auth/refresh/?$ auth.php/refresh [L,QSA]
+RewriteRule ^auth/change-password/?$ auth.php/change-password [L,QSA]
+
+# Bloquear acceso directo a archivos de configuración
+<Files "config.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "users.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Bloquear acceso a directorio de datos
+<Directory "../data">
+    Order Deny,Allow
+    Deny from all
+</Directory>
+
+# Configuración de seguridad adicional
+<IfModule mod_headers.c>
+    # Prevenir clickjacking
+    Header always append X-Frame-Options SAMEORIGIN
+
+    # Prevenir MIME type sniffing
+    Header always set X-Content-Type-Options nosniff
+
+    # Habilitar protección XSS en navegadores
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Forzar HTTPS en producción (descomentar cuando tengas SSL)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# Configuración PHP
+<IfModule mod_php.c>
+    # Ocultar versión de PHP
+    php_flag expose_php off
+
+    # Configurar límites
+    php_value max_execution_time 30
+    php_value max_input_time 30
+    php_value memory_limit 128M
+    php_value post_max_size 10M
+    php_value upload_max_filesize 10M
+</IfModule>
+
+# Comprimir respuestas
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+</IfModule>
+
+# Cache para archivos estáticos (si los hay)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/json "access plus 0 seconds"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

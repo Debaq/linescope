@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Líneas de Investigación - UACH</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <!-- Header con logos y título -->
+        <div class="header">
+            <div class="logos-container">
+                <div class="logo">
+                    <img src="images/logo_uach.png" alt="Universidad Austral de Chile" class="logo-img">
+                </div>
+                <div class="header-content">
+                    <h1>Portal de Líneas de Investigación</h1>
+                    <h2>Escuela de Tecnología Médica</h2>
+                    <h3>Sede Puerto Montt - Universidad Austral de Chile</h3>
+                    <p>Proyecto de Seminario de Titulación 2025-2 | Tesis 2026</p>
+                </div>
+                <div class="logo">
+                    <img src="images/logo_escuela.png" alt="Escuela de Tecnología Médica" class="logo-img">
+                </div>
+            </div>
+
+            <!-- Controles del header -->
+            <div class="header-controls">
+                <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <a href="login.html" class="login-btn">Acceso Profesores</a>
+            </div>
+        </div>
+
+        <!-- Filtros de búsqueda -->
+        <div class="filters">
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="areaFilter">Filtrar por Área:</label>
+                    <select id="areaFilter">
+                        <option value="">Todas las áreas</option>
+                        <option value="oftalmologia-optometria">Oftalmología y Optometría</option>
+                        <option value="otorrinolaringologia">Otorrinolaringología</option>
+                        <option value="otra">Otra área</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="searchInput">Buscar por nombre:</label>
+                    <input type="text" id="searchInput" placeholder="Buscar docente...">
+                </div>
+                <div class="filter-item">
+                    <label for="semestreFilter">Semestre requerido:</label>
+                    <select id="semestreFilter">
+                        <option value="">Cualquier semestre</option>
+                        <option value="primer">Primer semestre</option>
+                        <option value="segundo">Segundo semestre</option>
+                        <option value="indistinto">Indistinto</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="humanosFilter">Con humanos:</label>
+                    <select id="humanosFilter">
+                        <option value="">Todos</option>
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading state -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Cargando perfiles de investigación...</p>
+        </div>
+
+        <!-- Error state -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <h3>Error al cargar los perfiles</h3>
+            <p id="errorMessage">No se pudieron cargar los perfiles de investigación.</p>
+            <button id="retryBtn" class="retry-btn">Intentar nuevamente</button>
+        </div>
+
+        <!-- Grid de perfiles -->
+        <div id="profilesContainer" class="profiles-grid">
+            <!-- Los perfiles se cargarán aquí dinámicamente -->
+        </div>
+
+        <!-- Estado sin resultados -->
+        <div id="noResults" class="no-results" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <h3>No se encontraron perfiles</h3>
+            <p>No hay perfiles que coincidan con los filtros seleccionados.</p>
+            <button id="clearFilters" class="clear-filters-btn">Limpiar filtros</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Universidad Austral de Chile - Escuela de Tecnología Médica</p>
+            <p>Sede Puerto Montt | Portal de Líneas de Investigación</p>
+        </div>
+    </footer>
+
+    <script src="portal-public.js"></script>
+</body>
+</html>
