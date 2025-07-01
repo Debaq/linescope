@@ -1,12 +1,16 @@
 <?php
 // users.php - Gestión de usuarios con archivos JSON
 
-require_once 'config.php';
+// Evitar acceso directo
+if (!defined('USERS_DIR')) {
+    http_response_code(403);
+    die('Acceso directo no permitido');
+}
 
 class UserManager {
 
     private function getUserFilePath($email) {
-        return USERS_DIR . md5($email) . '.json';
+        return USERS_DIR . $email . '.json';
     }
 
     public function createUser($email, $password = null) {
@@ -147,11 +151,11 @@ function validateEmail($email) {
 function validatePassword($password) {
     // Mínimo 8 caracteres, al menos una letra y un número
     return strlen($password) >= 8 &&
-    preg_match('/[A-Za-z]/', $password) &&
-    preg_match('/[0-9]/', $password);
+           preg_match('/[A-Za-z]/', $password) &&
+           preg_match('/[0-9]/', $password);
 }
 
-// Crear algunos usuarios de ejemplo si no existen
+// Crear usuarios por defecto si no existen
 function createDefaultUsers() {
     $userManager = new UserManager();
 

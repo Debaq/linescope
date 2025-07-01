@@ -162,11 +162,17 @@ class LoginManager {
         loginBtn.disabled = true;
 
         try {
-            const formData = new FormData(event.target);
+            // Obtener valores directamente de los inputs
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
             const loginData = {
-                email: formData.get('email').trim().toLowerCase(),
-                password: formData.get('password')
+                email: (emailInput.value || '').trim().toLowerCase(),
+                password: passwordInput.value || ''
             };
+
+            // Debug: ver qué datos se están enviando
+            console.log('Datos a enviar:', loginData);
 
             const response = await fetch('./api/auth.php/login', {
                 method: 'POST',
@@ -176,7 +182,17 @@ class LoginManager {
                 body: JSON.stringify(loginData)
             });
 
-            const data = await response.json();
+            // Debug: ver la respuesta completa
+            const responseText = await response.text();
+            console.log('Respuesta del servidor:', responseText);
+            
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Error parseando JSON:', responseText);
+                throw new Error('Respuesta del servidor no es JSON válido');
+            }
 
             if (data.success) {
                 // Login exitoso
