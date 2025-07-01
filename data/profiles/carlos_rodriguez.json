@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "created_at": "2025-06-30T10:00:00Z",
+    "updated_at": "2025-06-30T11:00:00Z",
+    "version": "1.0",
+    "status": "published"
+  },
+  "personal_info": {
+    "nombre": "Dr. Carlos Rodríguez Medina",
+    "email": "carlos.rodriguez@uach.cl",
+    "area": "otra"
+  },
+  "research_lines": {
+    "linea_principal": "Imagenología médica y procesamiento de señales",
+    "lineas_secundarias": ["Inteligencia artificial en diagnóstico", "Telemedicina", "Radiología digital"]
+  },
+  "current_work": {
+    "proyectos": "Desarrollo de algoritmos de IA para detección automática de patologías en radiografías",
+    "metodologia": "Machine learning, deep learning, procesamiento de imágenes médicas",
+    "objetivos": "Crear sistema de apoyo diagnóstico automatizado para tecnólogos médicos"
+  },
+  "thesis_projections": {
+    "desarrollo": "Implementación de sistemas inteligentes para análisis de imágenes médicas",
+    "viabilidad": "10 meses con acceso a base de datos de imágenes y recursos computacionales",
+    "recursos": "Servidor de procesamiento, base de datos DICOM, software especializado"
+  },
+  "timing": {
+    "semestre_requerido": "indistinto",
+    "justificacion": "El trabajo es principalmente computacional y puede realizarse en cualquier periodo"
+  },
+  "ethics": {
+    "involucra_humanos": false,
+    "experiencia_comite": true,
+    "detalles": "Trabajo con imágenes anonimizadas, sin contacto directo con pacientes"
+  },
+  "thesis_proposals": [
+    "Detección automática de neumonía en radiografías de tórax",
+    "Sistema de telemedicina para zonas rurales",
+    "Optimización de protocolos de adquisición de imágenes"
+  ],
+  "background": {
+    "publicaciones": [
+      "AI applications in medical imaging (2024)",
+      "Telemedicine implementation in rural areas (2023)",
+      "Digital radiography optimization (2023)"
+    ],
+    "colaboraciones": ["Hospital Regional Puerto Montt", "Universidad de Chile - Ingeniería"],
+    "financiamiento": "CORFO 2024-2026 - Innovación en Salud Digital"
+  },
+  "previous_thesis": [],
+  "multimedia": {
+    "videos": [
+      {
+        "titulo": "Inteligencia artificial en imagenología",
+        "duracion": "7:20",
+        "platform": "youtube",
+        "video_id": "dQw4w9WgXcQ",
+        "url": "https://youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    ]
+  }
+}

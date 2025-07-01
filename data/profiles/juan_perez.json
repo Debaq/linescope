@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "created_at": "2025-06-30T10:00:00Z",
+    "updated_at": "2025-06-30T11:00:00Z",
+    "version": "1.0",
+    "status": "published"
+  },
+  "personal_info": {
+    "nombre": "Dr. Juan Pérez González",
+    "email": "juan.perez@uach.cl",
+    "area": "oftalmologia-optometria"
+  },
+  "research_lines": {
+    "linea_principal": "Biomecánica ocular y córnea",
+    "lineas_secundarias": ["Lentes de contacto especiales", "Cirugía refractiva", "Queratocono"]
+  },
+  "current_work": {
+    "proyectos": "Estudio de rigidez corneal en queratocono mediante tonometría modificada",
+    "metodologia": "Tonometría de Goldmann modificada, OCT corneal, análisis biomecánico",
+    "objetivos": "Desarrollar protocolo de seguimiento pre y post crosslinking corneal"
+  },
+  "thesis_projections": {
+    "desarrollo": "Investigación en biomateriales para lentes de contacto terapéuticos y análisis de propiedades ópticas",
+    "viabilidad": "8 meses factibles con laboratorio de biomateriales disponible",
+    "recursos": "Laboratorio de biomateriales, microscopio confocal, tonómetro especializado"
+  },
+  "timing": {
+    "semestre_requerido": "segundo",
+    "justificacion": "Requiere periodo de seguimiento post-tratamiento de 4 meses para resultados válidos"
+  },
+  "ethics": {
+    "involucra_humanos": true,
+    "experiencia_comite": true,
+    "detalles": "Protocolos aprobados para estudios no invasivos con pacientes voluntarios"
+  },
+  "thesis_proposals": [
+    "Efectividad de lentes esclerales en ojo seco severo",
+    "Correlación topográfica pre y post crosslinking corneal",
+    "Adaptación de lentes RGP en córneas irregulares post-queratoplastia"
+  ],
+  "background": {
+    "publicaciones": [
+      "Corneal biomechanics in keratoconus: A comprehensive study (2024)",
+      "Scleral lens fitting in irregular corneas (2023)",
+      "Post-crosslinking corneal changes (2022)"
+    ],
+    "colaboraciones": ["Hospital Clínico Universidad de Chile", "Centro de la Visión Puerto Montt"],
+    "financiamiento": "FONDECYT Iniciación 2024-2026 - Biomecánica Corneal"
+  },
+  "previous_thesis": [
+    {
+      "titulo": "Análisis topográfico en queratocono",
+      "año": 2023,
+      "estudiante": "María González Soto",
+      "disponible": true,
+      "linea_asociada": "Biomecánica ocular"
+    },
+    {
+      "titulo": "Lentes esclerales en córnea irregular",
+      "año": 2022,
+      "estudiante": "Carlos Mendoza Ruiz",
+      "disponible": true,
+      "linea_asociada": "Lentes de contacto especiales"
+    }
+  ],
+  "multimedia": {
+    "videos": [
+      {
+        "titulo": "Introducción a la línea de investigación",
+        "duracion": "4:30",
+        "platform": "youtube",
+        "video_id": "dQw4w9WgXcQ",
+        "url": "https://youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      {
+        "titulo": "Técnicas de laboratorio en biomecánica corneal",
+        "duracion": "6:15",
+        "platform": "youtube", 
+        "video_id": "dQw4w9WgXcQ",
+        "url": "https://youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    ]
+  }
+}

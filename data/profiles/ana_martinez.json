@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "created_at": "2025-06-30T10:00:00Z",
+    "updated_at": "2025-06-30T11:00:00Z",
+    "version": "1.0",
+    "status": "published"
+  },
+  "personal_info": {
+    "nombre": "Dra. Ana Martínez Silva",
+    "email": "ana.martinez@uach.cl",
+    "area": "otorrinolaringologia"
+  },
+  "research_lines": {
+    "linea_principal": "Audiología clínica y rehabilitación auditiva",
+    "lineas_secundarias": ["Implantes cocleares", "Terapia de tinnitus", "Audiometría avanzada"]
+  },
+  "current_work": {
+    "proyectos": "Efectividad de terapia sonora personalizada en tinnitus crónico",
+    "metodologia": "Audiometría tonal, tests psicoacústicos, evaluación de calidad de vida",
+    "objetivos": "Establecer protocolo de tratamiento personalizado basado en características del tinnitus"
+  },
+  "thesis_projections": {
+    "desarrollo": "Validación de nuevas técnicas audiométricas y desarrollo de protocolos de rehabilitación",
+    "viabilidad": "8 meses con acceso completo a cabina audiométrica y software especializado",
+    "recursos": "Laboratorio de audiología, cabina audiométrica, software de análisis psicoacústico"
+  },
+  "timing": {
+    "semestre_requerido": "primer",
+    "justificacion": "Mayor disponibilidad de pacientes y menor interferencia con periodo académico intensivo"
+  },
+  "ethics": {
+    "involucra_humanos": true,
+    "experiencia_comite": true,
+    "detalles": "Amplia experiencia en estudios con pacientes auditivos, protocolos aprobados"
+  },
+  "thesis_proposals": [
+    "Evaluación de implantes de conducción ósea en hipoacusia mixta",
+    "Terapia cognitiva conductual en tinnitus subjetivo",
+    "Adaptación de audífonos en hipoacusia severa bilateral"
+  ],
+  "background": {
+    "publicaciones": [
+      "Tinnitus therapy outcomes in Chilean population (2024)",
+      "Cochlear implant rehabilitation protocols (2023)",
+      "Advanced audiometry techniques (2023)"
+    ],
+    "colaboraciones": ["Hospital Salvador Valdivia", "INCA Chile", "Fundación Oír"],
+    "financiamiento": "Proyecto interno UACH 2024-2025 - Rehabilitación Auditiva"
+  },
+  "previous_thesis": [
+    {
+      "titulo": "Rehabilitación auditiva post-implante coclear",
+      "año": 2023,
+      "estudiante": "Pedro Sánchez López",
+      "disponible": true,
+      "linea_asociada": "Implantes cocleares"
+    }
+  ],
+  "multimedia": {
+    "videos": [
+      {
+        "titulo": "Línea de investigación audiológica",
+        "duracion": "5:00",
+        "platform": "youtube",
+        "video_id": "dQw4w9WgXcQ",
+        "url": "https://youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    ]
+  }
+}
