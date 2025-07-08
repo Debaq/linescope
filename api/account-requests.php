@@ -132,7 +132,12 @@ function validateRUT($rut) {
 
 // Función para validar email
 function validateEmail($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL) && strpos($email, '@uach.cl') !== false;
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        return false;
+    }
+
+    // Validar dominios institucionales (MODIFICADO)
+    return (strpos($email, '@uach.cl') !== false || strpos($email, '@tmeduca.org') !== false);
 }
 
 // Función para enviar email de notificación

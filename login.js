@@ -98,29 +98,31 @@ class LoginManager {
     }
 
     // Validaciones
+
     validateEmail() {
         const email = document.getElementById('email').value.trim();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (!email) {
             this.showError('email', 'El email es requerido');
             return false;
         }
-        
+
         if (!emailRegex.test(email)) {
             this.showError('email', 'Formato de email inválido');
             return false;
         }
 
-        // Validar dominio institucional (opcional)
-        if (!email.includes('@uach.cl')) {
-            this.showError('email', 'Debe usar email institucional (@uach.cl)');
+        // Validar dominios institucionales (MODIFICADO)
+        if (!email.includes('@uach.cl') && !email.includes('@tmeduca.org')) {
+            this.showError('email', 'Debe usar email institucional (@uach.cl o @tmeduca.org)');
             return false;
         }
-        
+
         this.clearError('email');
         return true;
     }
+
 
     validatePassword() {
         const password = document.getElementById('password').value;
@@ -203,8 +205,21 @@ class LoginManager {
                 
                 // Redirigir después de un momento
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
+                    const userRole = data.data.user.role || 'professor';
+                    switch (userRole) {
+                        case 'admin':
+                            window.location.href = 'dashboard-admin.html';
+                            break;
+                        case 'student':
+                            window.location.href = 'dashboard-student.html';
+                            break;
+                        case 'professor':
+                        case 'researcher':
+                        case 'reviewer':
+                        default:
+                            window.location.href = 'dashboard.html';
+                            break;
+                    }                }, 500);
                 
             } else {
                 // Error en login
