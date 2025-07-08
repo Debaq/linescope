@@ -1007,3 +1007,66 @@ select:focus, input:focus {
         padding: 20px;
     }
 }
+
+/* Estilos adicionales para múltiples áreas - Agregar a styles.css */
+
+/* Contenedor de múltiples áreas en el header del perfil */
+.profile-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    min-height: 32px;
+}
+
+/* Tag individual para cada área */
+.area-tag {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+.area-tag:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.5);
+    transform: scale(1.05);
+}
+
+/* Cuando solo hay una área, mantener el estilo original */
+.profile-area:not(:has(.area-tag)) {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    display: inline-block;
+}
+
+/* Responsive: En móviles, centrar mejor las áreas */
+@media (max-width: 768px) {
+    .profile-area {
+        gap: 6px;
+    }
+
+    .area-tag {
+        font-size: 0.8em;
+        padding: 3px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-area {
+        gap: 4px;
+        margin-top: 8px;
+    }
+
+    .area-tag {
+        font-size: 0.75em;
+        padding: 2px 8px;
+    }
+}

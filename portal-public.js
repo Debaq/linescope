@@ -1,10 +1,10 @@
-// Portal Público - JavaScript
+// Portal Público - JavaScript con soporte para múltiples áreas
 class PortalPublic {
     constructor() {
         this.profesores = [];
         this.filteredProfesores = [];
         this.currentTheme = localStorage.getItem('theme') || 'light';
-        
+
         this.init();
     }
 
@@ -67,7 +67,7 @@ class PortalPublic {
 
         try {
             const response = await fetch('./api/profiles.php');
-            
+
             if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
@@ -106,7 +106,7 @@ class PortalPublic {
         document.getElementById('errorState').style.display = 'flex';
         document.getElementById('profilesContainer').style.display = 'none';
         document.getElementById('noResults').style.display = 'none';
-        
+
         const errorMessage = document.getElementById('errorMessage');
         if (errorMessage) {
             errorMessage.textContent = message;
@@ -127,7 +127,7 @@ class PortalPublic {
         document.getElementById('noResults').style.display = 'none';
     }
 
-    // Utilidades
+    // Utilidades para áreas
     getAreaName(area) {
         const areas = {
             'oftalmologia-optometria': 'Oftalmología y Optometría',
@@ -135,6 +135,36 @@ class PortalPublic {
             'otra': 'Otra área'
         };
         return areas[area] || area;
+    }
+
+    // Nueva función para manejar múltiples áreas
+    getAreasDisplay(areaData) {
+        if (!areaData) return 'Área no especificada';
+
+        // Si es un string, convertir a array de un elemento
+        const areas = Array.isArray(areaData) ? areaData : [areaData];
+
+        // Mapear cada área a su nombre legible
+        const areaNames = areas.map(area => this.getAreaName(area));
+
+        // Si hay múltiples áreas, crear HTML con tags
+        if (areaNames.length > 1) {
+            return areaNames.map(name => `<span class="area-tag">${name}</span>`).join('');
+        } else {
+            // Si es una sola área, retornar como texto simple
+            return areaNames[0];
+        }
+    }
+
+    // Función para verificar si un profesor pertenece a un área específica
+    profesorMatchesArea(profesor, targetArea) {
+        if (!targetArea) return true; // Sin filtro = mostrar todos
+
+        const profesorAreas = Array.isArray(profesor.personal_info?.area)
+        ? profesor.personal_info.area
+        : [profesor.personal_info?.area];
+
+        return profesorAreas.includes(targetArea);
     }
 
     getSemestreName(semestre) {
@@ -146,7 +176,7 @@ class PortalPublic {
         return semestres[semestre] || semestre;
     }
 
-    // Filtrado de perfiles
+    // Filtrado de perfiles (modificado para soportar múltiples áreas)
     filterProfiles() {
         const areaFilter = document.getElementById('areaFilter')?.value || '';
         const searchFilter = document.getElementById('searchInput')?.value.toLowerCase() || '';
@@ -154,20 +184,20 @@ class PortalPublic {
         const humanosFilter = document.getElementById('humanosFilter')?.value || '';
 
         this.filteredProfesores = this.profesores.filter(profesor => {
-            // Filtro por área
-            const matchArea = !areaFilter || profesor.personal_info?.area === areaFilter;
-            
+            // Filtro por área (modificado para soportar múltiples áreas)
+            const matchArea = this.profesorMatchesArea(profesor, areaFilter);
+
             // Filtro por búsqueda de nombre
-            const matchSearch = !searchFilter || 
-                profesor.personal_info?.nombre.toLowerCase().includes(searchFilter);
-            
+            const matchSearch = !searchFilter ||
+            profesor.personal_info?.nombre.toLowerCase().includes(searchFilter);
+
             // Filtro por semestre
-            const matchSemestre = !semestreFilter || 
-                profesor.timing?.semestre_requerido === semestreFilter;
-            
+            const matchSemestre = !semestreFilter ||
+            profesor.timing?.semestre_requerido === semestreFilter;
+
             // Filtro por involucra humanos
-            const matchHumanos = !humanosFilter || 
-                profesor.ethics?.involucra_humanos?.toString() === humanosFilter;
+            const matchHumanos = !humanosFilter ||
+            profesor.ethics?.involucra_humanos?.toString() === humanosFilter;
 
             return matchArea && matchSearch && matchSemestre && matchHumanos;
         });
@@ -180,7 +210,7 @@ class PortalPublic {
         document.getElementById('searchInput').value = '';
         document.getElementById('semestreFilter').value = '';
         document.getElementById('humanosFilter').value = '';
-        
+
         this.filteredProfesores = [...this.profesores];
         this.renderProfiles();
     }
@@ -211,123 +241,123 @@ class PortalPublic {
         const videos = multimedia.videos || [];
 
         return `
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-name">${personalInfo.nombre || 'Nombre no disponible'}</div>
-                    <div class="profile-area">${this.getAreaName(personalInfo.area)}</div>
+        <div class="profile-card">
+        <div class="profile-header">
+        <div class="profile-name">${personalInfo.nombre || 'Nombre no disponible'}</div>
+        <div class="profile-area">${this.getAreasDisplay(personalInfo.area)}</div>
+        </div>
+        <div class="profile-body">
+        ${researchLines.linea_principal ? `
+            <div class="section">
+            <div class="section-title">Línea Principal</div>
+            <div class="section-content">${researchLines.linea_principal}</div>
+            ${researchLines.lineas_secundarias?.length > 0 ? `
+                <div class="tags">
+                ${researchLines.lineas_secundarias.map(linea => `<span class="tag">${linea}</span>`).join('')}
                 </div>
-                <div class="profile-body">
-                    ${researchLines.linea_principal ? `
-                        <div class="section">
-                            <div class="section-title">Línea Principal</div>
-                            <div class="section-content">${researchLines.linea_principal}</div>
-                            ${researchLines.lineas_secundarias?.length > 0 ? `
-                                <div class="tags">
-                                    ${researchLines.lineas_secundarias.map(linea => `<span class="tag">${linea}</span>`).join('')}
-                                </div>
-                            ` : ''}
-                        </div>
-                    ` : ''}
+                ` : ''}
+                </div>
+                ` : ''}
 
-                    ${currentWork.proyectos ? `
-                        <div class="section">
-                            <div class="section-title">Trabajo Actual</div>
-                            <div class="section-content">
-                                <strong>Proyecto:</strong> ${currentWork.proyectos}<br>
-                                ${currentWork.metodologia ? `<strong>Metodología:</strong> ${currentWork.metodologia}<br>` : ''}
-                                ${currentWork.objetivos ? `<strong>Objetivos:</strong> ${currentWork.objetivos}` : ''}
-                            </div>
-                        </div>
+                ${currentWork.proyectos ? `
+                    <div class="section">
+                    <div class="section-title">Trabajo Actual</div>
+                    <div class="section-content">
+                    <strong>Proyecto:</strong> ${currentWork.proyectos}<br>
+                    ${currentWork.metodologia ? `<strong>Metodología:</strong> ${currentWork.metodologia}<br>` : ''}
+                    ${currentWork.objetivos ? `<strong>Objetivos:</strong> ${currentWork.objetivos}` : ''}
+                    </div>
+                    </div>
                     ` : ''}
 
                     <div class="section">
-                        <div class="section-title">Información para Tesis</div>
-                        <div class="section-content">
-                            ${timing.semestre_requerido ? `<strong>Semestre requerido:</strong> ${this.getSemestreName(timing.semestre_requerido)}<br>` : ''}
-                            <strong>Involucra humanos:</strong> ${ethics.involucra_humanos ? 'Sí' : 'No'}<br>
-                            ${thesisProjections.viabilidad ? `<strong>Viabilidad:</strong> ${thesisProjections.viabilidad}<br>` : ''}
-                            ${timing.justificacion ? `<strong>Justificación:</strong> ${timing.justificacion}` : ''}
-                        </div>
+                    <div class="section-title">Información para Tesis</div>
+                    <div class="section-content">
+                    ${timing.semestre_requerido ? `<strong>Semestre requerido:</strong> ${this.getSemestreName(timing.semestre_requerido)}<br>` : ''}
+                    <strong>Involucra humanos:</strong> ${ethics.involucra_humanos ? 'Sí' : 'No'}<br>
+                    ${thesisProjections.viabilidad ? `<strong>Viabilidad:</strong> ${thesisProjections.viabilidad}<br>` : ''}
+                    ${timing.justificacion ? `<strong>Justificación:</strong> ${timing.justificacion}` : ''}
+                    </div>
                     </div>
 
                     ${thesisProjections.desarrollo ? `
                         <div class="section">
-                            <div class="section-title">Proyecciones de Tesis</div>
-                            <div class="section-content">
-                                ${thesisProjections.desarrollo}<br>
-                                ${thesisProjections.recursos ? `<strong>Recursos:</strong> ${thesisProjections.recursos}` : ''}
-                            </div>
+                        <div class="section-title">Proyecciones de Tesis</div>
+                        <div class="section-content">
+                        ${thesisProjections.desarrollo}<br>
+                        ${thesisProjections.recursos ? `<strong>Recursos:</strong> ${thesisProjections.recursos}` : ''}
                         </div>
-                    ` : ''}
+                        </div>
+                        ` : ''}
 
-                    ${thesisProposals.length > 0 ? `
-                        <div class="section">
+                        ${thesisProposals.length > 0 ? `
+                            <div class="section">
                             <div class="section-title">Propuestas de Temas</div>
                             <div class="section-content">
-                                <ul>
-                                    ${thesisProposals.map(tema => `<li>${tema}</li>`).join('')}
-                                </ul>
+                            <ul>
+                            ${thesisProposals.map(tema => `<li>${tema}</li>`).join('')}
+                            </ul>
                             </div>
-                        </div>
-                    ` : ''}
+                            </div>
+                            ` : ''}
 
-                    ${background.publicaciones?.length > 0 || background.colaboraciones?.length > 0 || background.financiamiento ? `
-                        <div class="section">
-                            <div class="section-title">Antecedentes</div>
-                            <div class="section-content">
+                            ${background.publicaciones?.length > 0 || background.colaboraciones?.length > 0 || background.financiamiento ? `
+                                <div class="section">
+                                <div class="section-title">Antecedentes</div>
+                                <div class="section-content">
                                 ${background.publicaciones?.length > 0 ? `
                                     <strong>Publicaciones:</strong><br>
                                     <ul>
-                                        ${background.publicaciones.map(pub => `<li>${pub}</li>`).join('')}
+                                    ${background.publicaciones.map(pub => `<li>${pub}</li>`).join('')}
                                     </ul>
-                                ` : ''}
-                                ${background.colaboraciones?.length > 0 ? `
-                                    <strong>Colaboraciones:</strong> ${background.colaboraciones.join(', ')}<br>
-                                ` : ''}
-                                ${background.financiamiento ? `<strong>Financiamiento:</strong> ${background.financiamiento}` : ''}
-                            </div>
-                        </div>
-                    ` : ''}
+                                    ` : ''}
+                                    ${background.colaboraciones?.length > 0 ? `
+                                        <strong>Colaboraciones:</strong> ${background.colaboraciones.join(', ')}<br>
+                                        ` : ''}
+                                        ${background.financiamiento ? `<strong>Financiamiento:</strong> ${background.financiamiento}` : ''}
+                                        </div>
+                                        </div>
+                                        ` : ''}
 
-                    ${videos.length > 0 ? `
-                        <div class="videos-section">
-                            <div class="section-title">Videos Explicativos</div>
-                            ${videos.map(video => `
-                                <div class="video-item">
-                                    <div>
-                                        <strong>${video.titulo}</strong><br>
-                                        <small>Duración: ${video.duracion}</small>
-                                    </div>
-                                    <button class="btn" onclick="window.open('${video.url}', '_blank')">Ver</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    ` : ''}
+                                        ${videos.length > 0 ? `
+                                            <div class="videos-section">
+                                            <div class="section-title">Videos Explicativos</div>
+                                            ${videos.map(video => `
+                                                <div class="video-item">
+                                                <div>
+                                                <strong>${video.titulo}</strong><br>
+                                                <small>Duración: ${video.duracion}</small>
+                                                </div>
+                                                <button class="btn" onclick="window.open('${video.url}', '_blank')">Ver</button>
+                                                </div>
+                                                `).join('')}
+                                                </div>
+                                                ` : ''}
 
-                    ${previousThesis.length > 0 ? `
-                        <div class="tesis-section">
-                            <div class="section-title">Tesis Previas</div>
-                            ${previousThesis.map(tesis => `
-                                <div class="tesis-item">
-                                    <div>
-                                        <strong>${tesis.titulo}</strong><br>
-                                        <small>${tesis.estudiante} (${tesis.año})</small>
-                                    </div>
-                                    ${tesis.disponible ? `
-                                        <button class="btn btn-download" onclick="window.open('downloads/${tesis.titulo.toLowerCase().replace(/\s+/g, '_')}_${tesis.año}.pdf', '_blank')">Descargar</button>
-                                    ` : `
-                                        <span class="btn" style="opacity: 0.5; cursor: not-allowed;">No disponible</span>
-                                    `}
-                                </div>
-                            `).join('')}
-                        </div>
-                    ` : ''}
-                </div>
-                <div class="contact-info">
-                    📧 ${personalInfo.email || 'Email no disponible'}
-                </div>
-            </div>
-        `;
+                                                ${previousThesis.length > 0 ? `
+                                                    <div class="tesis-section">
+                                                    <div class="section-title">Tesis Previas</div>
+                                                    ${previousThesis.map(tesis => `
+                                                        <div class="tesis-item">
+                                                        <div>
+                                                        <strong>${tesis.titulo}</strong><br>
+                                                        <small>${tesis.estudiante} (${tesis.año})</small>
+                                                        </div>
+                                                        ${tesis.disponible ? `
+                                                            <button class="btn btn-download" onclick="window.open('downloads/${tesis.titulo.toLowerCase().replace(/\s+/g, '_')}_${tesis.año}.pdf', '_blank')">Descargar</button>
+                                                            ` : `
+                                                            <span class="btn" style="opacity: 0.5; cursor: not-allowed;">No disponible</span>
+                                                            `}
+                                                            </div>
+                                                            `).join('')}
+                                                            </div>
+                                                            ` : ''}
+                                                            </div>
+                                                            <div class="contact-info">
+                                                            📧 ${personalInfo.email || 'Email no disponible'}
+                                                            </div>
+                                                            </div>
+                                                            `;
     }
 
     // Manejo de videos externos
