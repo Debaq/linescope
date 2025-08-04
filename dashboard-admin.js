@@ -1858,19 +1858,3 @@ if (localStorage.getItem('debug') === 'true') {
     console.log('  - Ctrl+N: New item (context-sensitive)');
     console.log('  - Ctrl+R: Refresh current section');
     console.log('  - 1-7: Quick section navigation');
-}-row">
-                <strong>Nombre Completo:</strong> ${request.fullName}
-            </div>
-            <div class="detail-row">
-                <strong>Email:</strong> ${request.email}
-            </div>
-            <div class="detail-row">
-                <strong>RUT:</strong> ${request.rut}
-            </div>
-            <div class="detail-row">
-                <strong>Rol Solicitado:</strong> ${getRoleLabel(request.role)}
-            </div>
-            <div class="detail-row">
-                <strong>Carrera:</strong> ${request.career}
-            </div>
-            <div class="detail
