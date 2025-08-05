@@ -284,17 +284,21 @@ class PortalPublic {
         <div class="profile-area">${this.getAreasDisplay(personalInfo.area)}</div>
         </div>
         <div class="profile-body">
-        ${researchLines.linea_principal ? `
-            <div class="section">
-            <div class="section-title">Línea Principal</div>
-            <div class="section-content">${researchLines.linea_principal}</div>
-            ${researchLines.lineas_secundarias?.length > 0 ? `
-                <div class="tags">
-                ${researchLines.lineas_secundarias.map(linea => `<span class="tag">${linea}</span>`).join('')}
-                </div>
-                ` : ''}
-                </div>
-                ` : ''}
+${researchLines.linea_principal ? `
+    <div class="section">
+    <div class="section-title">Línea Principal</div>
+    <div class="section-content">${researchLines.linea_principal}</div>
+    </div>
+    ` : ''}
+
+${researchLines.lineas_secundarias?.length > 0 ? `
+    <div class="section">
+    <div class="section-title">Líneas Secundarias</div>
+    <div class="section-content">
+        ${researchLines.lineas_secundarias.map(linea => linea).join('<br>')}
+    </div>
+    </div>
+    ` : ''}
 
                 ${currentWork.proyectos ? `
                     <div class="section">
