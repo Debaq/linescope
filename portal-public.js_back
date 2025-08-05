@@ -4,7 +4,6 @@ class PortalPublic {
         this.profesores = [];
         this.filteredProfesores = [];
         this.currentTheme = localStorage.getItem('theme') || 'light';
-        this.openAccordion = null; // Variable para controlar qué acordeón está abierto
 
         this.init();
     }
@@ -137,39 +136,7 @@ class PortalPublic {
         };
         return areas[area] || area;
     }
-    toggleThesisAccordion(profesorIndex) {
-        const accordionContent = document.getElementById(`thesis-content-${profesorIndex}`);
-        const accordionHeader = document.getElementById(`thesis-header-${profesorIndex}`);
-        const arrow = accordionHeader.querySelector('.accordion-arrow');
 
-        // Si hay otro acordeón abierto, cerrarlo
-        if (this.openAccordion !== null && this.openAccordion !== profesorIndex) {
-            const openContent = document.getElementById(`thesis-content-${this.openAccordion}`);
-            const openHeader = document.getElementById(`thesis-header-${this.openAccordion}`);
-            const openArrow = openHeader.querySelector('.accordion-arrow');
-
-            openContent.classList.remove('open');
-            openHeader.classList.remove('active');
-            openArrow.style.transform = 'rotate(0deg)';
-        }
-
-        // Toggle del acordeón actual
-        const isOpen = accordionContent.classList.contains('open');
-
-        if (isOpen) {
-            // Cerrar
-            accordionContent.classList.remove('open');
-            accordionHeader.classList.remove('active');
-            arrow.style.transform = 'rotate(0deg)';
-            this.openAccordion = null;
-        } else {
-            // Abrir
-            accordionContent.classList.add('open');
-            accordionHeader.classList.add('active');
-            arrow.style.transform = 'rotate(90deg)';
-            this.openAccordion = profesorIndex;
-        }
-    }
     // Nueva función para manejar múltiples áreas
     getAreasDisplay(areaData) {
         if (!areaData) return 'Área no especificada';
@@ -186,65 +153,6 @@ class PortalPublic {
         } else {
             // Si es una sola área, retornar como texto simple
             return areaNames[0];
-        }
-    }
-
-    // Función para abrir video en modal
-    openVideoModal(videoData) {
-        // Crear modal si no existe
-        let modal = document.getElementById('videoModal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'videoModal';
-            modal.className = 'modal';
-            modal.innerHTML = `
-            <div class="modal-content video-modal-content">
-            <div class="modal-header">
-            <h3 id="videoModalTitle">Video</h3>
-            <button class="modal-close" onclick="closeVideoModal()">
-            <i class="fas fa-times"></i>
-            </button>
-            </div>
-            <div class="modal-body">
-            <div class="video-container">
-            <video id="modalVideo" controls>
-            Tu navegador no soporta el elemento video.
-            </video>
-            </div>
-            </div>
-            </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        // Actualizar contenido del modal
-        document.getElementById('videoModalTitle').textContent = videoData.titulo;
-        const video = document.getElementById('modalVideo');
-        video.src = videoData.url;
-
-        // Mostrar modal
-        modal.classList.add('show');
-
-        // Prevenir scroll del body
-        document.body.style.overflow = 'hidden';
-    }
-
-
-    // Función para cerrar modal de video
-    closeVideoModal() {
-        const modal = document.getElementById('videoModal');
-        if (modal) {
-            modal.classList.remove('show');
-
-            // Pausar video
-            const video = document.getElementById('modalVideo');
-            if (video) {
-                video.pause();
-                video.src = '';
-            }
-
-            // Restaurar scroll del body
-            document.body.style.overflow = '';
         }
     }
 
@@ -314,15 +222,12 @@ class PortalPublic {
             return;
         }
 
-
         this.showProfiles();
         const container = document.getElementById('profilesContainer');
-        container.innerHTML = this.filteredProfesores.map((profesor, index) =>
-        this.createProfileCard(profesor, index)
-        ).join('');
+        container.innerHTML = this.filteredProfesores.map(profesor => this.createProfileCard(profesor)).join('');
     }
 
-    createProfileCard(profesor, index) {
+    createProfileCard(profesor) {
         const personalInfo = profesor.personal_info || {};
         const researchLines = profesor.research_lines || {};
         const currentWork = profesor.current_work || {};
@@ -423,8 +328,7 @@ class PortalPublic {
                                                 <strong>${video.titulo}</strong><br>
                                                 <small>Duración: ${video.duracion}</small>
                                                 </div>
-                                                <button class="btn" onclick="portal.openVideoModal({titulo: '${video.titulo}', url: '${video.url}'})">Ver</button>
-
+                                                <button class="btn" onclick="window.open('${video.url}', '_blank')">Ver</button>
                                                 </div>
                                                 `).join('')}
                                                 </div>
@@ -432,12 +336,8 @@ class PortalPublic {
 
                                                 ${previousThesis.length > 0 ? `
                                                     <div class="tesis-section">
-                                                    <div class="thesis-accordion-header" id="thesis-header-${index}" onclick="portalPublic.toggleThesisAccordion(${index})">
-                                                    <div class="section-title">Tesis Previas (${previousThesis.length})</div>
-                                                    <div class="accordion-arrow">▶</div>
-                                                    </div>
-                                                    <div class="thesis-accordion-content" id="thesis-content-${index}">
-                                                    ${previousThesis.map((tesis, tesisIndex) => `
+                                                    <div class="section-title">Tesis Previas</div>
+                                                    ${previousThesis.map(tesis => `
                                                         <div class="tesis-item">
                                                         <div>
                                                         <strong>${tesis.titulo}</strong><br>
@@ -451,13 +351,13 @@ class PortalPublic {
                                                             </div>
                                                             `).join('')}
                                                             </div>
-                                                            </div>
                                                             ` : ''}
                                                             </div>
                                                             <div class="contact-info">
                                                             📧 ${personalInfo.email || 'Email no disponible'}
                                                             </div>
-                                                            </div>`;
+                                                            </div>
+                                                            `;
     }
 
     // Manejo de videos externos
@@ -471,24 +371,9 @@ class PortalPublic {
     }
 }
 
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeVideoModal();
-    }
-});
-
-// Cerrar modal al hacer clic en el fondo
-document.addEventListener('click', (e) => {
-    if (e.target.id === 'videoModal') {
-        closeVideoModal();
-    }
-});
-
 // Inicializar la aplicación cuando el DOM esté listo
-let portalPublic;
 document.addEventListener('DOMContentLoaded', () => {
-    portalPublic = new PortalPublic();
+    new PortalPublic();
 });
 
 // Exportar para uso global si es necesario

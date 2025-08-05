@@ -1070,3 +1070,242 @@ select:focus, input:focus {
         padding: 2px 8px;
     }
 }
+
+/* ========================
+ *  ESTILOS PARA ACORDEÓN DE TESIS
+ *  Agregar al final de styles.css
+ *  ======================== */
+
+/* Header del acordeón */
+.thesis-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 10px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.thesis-accordion-header:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.thesis-accordion-header.active {
+    background-color: rgba(102, 126, 234, 0.1);
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.thesis-accordion-header .section-title {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+    font-weight: bold;
+    color: var(--text-primary);
+    font-size: 1.1em;
+    flex: 1;
+}
+
+/* Flecha del acordeón */
+.accordion-arrow {
+    font-size: 0.8em;
+    color: var(--accent-blue);
+    transition: transform 0.3s ease;
+    font-weight: bold;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+/* Contenido del acordeón */
+.thesis-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease;
+    padding: 0;
+    margin: 0;
+}
+
+.thesis-accordion-content.open {
+    max-height: 1000px; /* Valor alto para permitir contenido variable */
+    padding-top: 10px;
+    margin-top: 5px;
+}
+
+/* Ajuste de la sección de tesis para el acordeón */
+.tesis-section {
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+/* Elementos de tesis dentro del acordeón */
+.thesis-accordion-content .tesis-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+    animation: fadeInSlide 0.3s ease forwards;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.thesis-accordion-content.open .tesis-item {
+    animation-delay: calc(var(--item-index, 0) * 0.1s);
+}
+
+.thesis-accordion-content .tesis-item:nth-child(1) { --item-index: 0; }
+.thesis-accordion-content .tesis-item:nth-child(2) { --item-index: 1; }
+.thesis-accordion-content .tesis-item:nth-child(3) { --item-index: 2; }
+.thesis-accordion-content .tesis-item:nth-child(4) { --item-index: 3; }
+.thesis-accordion-content .tesis-item:nth-child(5) { --item-index: 4; }
+
+.thesis-accordion-content .tesis-item:last-child {
+    border-bottom: none;
+}
+
+/* Animaciones */
+@keyframes fadeInSlide {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estados hover para mejor UX */
+.thesis-accordion-header:hover .accordion-arrow {
+    color: var(--accent-blue-hover);
+    transform: scale(1.1);
+}
+
+.thesis-accordion-header.active:hover .accordion-arrow {
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Indicador visual de que es clickeable */
+.thesis-accordion-header::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--accent-blue);
+    transition: height 0.3s ease;
+    border-radius: 2px;
+}
+
+.thesis-accordion-header.active::before {
+    height: 20px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .thesis-accordion-header {
+        padding: 8px 0;
+    }
+
+    .thesis-accordion-header:hover,
+    .thesis-accordion-header.active {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .accordion-arrow {
+        font-size: 0.7em;
+        width: 18px;
+        height: 18px;
+    }
+
+    .thesis-accordion-content .tesis-item {
+        padding: 10px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .thesis-accordion-content .tesis-item .btn {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .thesis-accordion-header .section-title {
+        font-size: 1em;
+    }
+
+    .accordion-arrow {
+        font-size: 0.6em;
+        width: 16px;
+        height: 16px;
+    }
+
+    .thesis-accordion-content.open {
+        max-height: 800px;
+    }
+}
+
+/* Modo oscuro */
+[data-theme="dark"] .thesis-accordion-header:hover {
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+[data-theme="dark"] .thesis-accordion-header.active {
+    background-color: rgba(139, 92, 246, 0.15);
+}
+
+[data-theme="dark"] .accordion-arrow {
+    color: var(--accent-purple);
+}
+
+[data-theme="dark"] .thesis-accordion-header:hover .accordion-arrow {
+    color: #a78bfa;
+}
+
+[data-theme="dark"] .thesis-accordion-header::before {
+    background: var(--accent-purple);
+}
+
+/* Accesibilidad */
+.thesis-accordion-header:focus {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+[data-theme="dark"] .thesis-accordion-header:focus {
+    outline-color: var(--accent-purple);
+}
+
+/* Animación suave para modo de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .thesis-accordion-content {
+        transition: none;
+    }
+
+    .accordion-arrow {
+        transition: none;
+    }
+
+    .thesis-accordion-content .tesis-item {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .thesis-accordion-header {
+        transition: background-color 0.2s ease;
+    }
+}
