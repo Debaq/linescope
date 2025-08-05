@@ -189,64 +189,6 @@ class PortalPublic {
         }
     }
 
-    // Función para abrir video en modal
-    openVideoModal(videoData) {
-        // Crear modal si no existe
-        let modal = document.getElementById('videoModal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'videoModal';
-            modal.className = 'modal';
-            modal.innerHTML = `
-            <div class="modal-content video-modal-content">
-            <div class="modal-header">
-            <h3 id="videoModalTitle">Video</h3>
-            <button class="modal-close" onclick="closeVideoModal()">
-            <i class="fas fa-times"></i>
-            </button>
-            </div>
-            <div class="modal-body">
-            <div class="video-container">
-            <video id="modalVideo" controls>
-            Tu navegador no soporta el elemento video.
-            </video>
-            </div>
-            </div>
-            </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        // Actualizar contenido del modal
-        document.getElementById('videoModalTitle').textContent = videoData.titulo;
-        const video = document.getElementById('modalVideo');
-        video.src = videoData.url;
-
-        // Mostrar modal
-        modal.classList.add('show');
-
-        // Prevenir scroll del body
-        document.body.style.overflow = 'hidden';
-    }
-
-
-    // Función para cerrar modal de video
-    closeVideoModal() {
-        const modal = document.getElementById('videoModal');
-        if (modal) {
-            modal.classList.remove('show');
-
-            // Pausar video
-            const video = document.getElementById('modalVideo');
-            if (video) {
-                video.pause();
-                video.src = '';
-            }
-
-            // Restaurar scroll del body
-            document.body.style.overflow = '';
-        }
-    }
 
     // Función para verificar si un profesor pertenece a un área específica
     profesorMatchesArea(profesor, targetArea) {
@@ -414,21 +356,24 @@ class PortalPublic {
                                         </div>
                                         ` : ''}
 
-                                        ${videos.length > 0 ? `
-                                            <div class="videos-section">
+                                    ${videos.length > 0 ? `
+                                        <div class="multimedia-section">
                                             <div class="section-title">Videos Explicativos</div>
-                                            ${videos.map(video => `
-                                                <div class="video-item">
-                                                <div>
-                                                <strong>${video.titulo}</strong><br>
-                                                <small>Duración: ${video.duracion}</small>
-                                                </div>
-                                                <button class="btn" onclick="portal.openVideoModal({titulo: '${video.titulo}', url: '${video.url}'})">Ver</button>
-
-                                                </div>
+                                            <div class="multimedia-content">
+                                                ${videos.map(video => `
+                                                    <div class="video-item">
+                                                        <div class="video-info">
+                                                            <strong>${video.titulo}</strong><br>
+                                                            <span class="video-duration">Duración: ${video.duracion}</span>
+                                                        </div>
+                                                        <button class="btn btn-video" onclick="window.open('${video.url}', '_blank')">
+                                                            ▶️ Ver Video
+                                                        </button>
+                                                    </div>
                                                 `).join('')}
-                                                </div>
-                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    ` : ''}
 
                                                 ${previousThesis.length > 0 ? `
                                                     <div class="tesis-section">
@@ -471,19 +416,6 @@ class PortalPublic {
     }
 }
 
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeVideoModal();
-    }
-});
-
-// Cerrar modal al hacer clic en el fondo
-document.addEventListener('click', (e) => {
-    if (e.target.id === 'videoModal') {
-        closeVideoModal();
-    }
-});
 
 // Inicializar la aplicación cuando el DOM esté listo
 let portalPublic;
